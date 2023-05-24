@@ -43,7 +43,7 @@ namespace WebApi.Conexion
         public static List<Cliente> Listar() { 
             List<Cliente> ListarClientes = new List<Cliente>();
             using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion)) {
-                SqlCommand cmd = new SqlCommand("select * from Cooperativa.dbo.DBCFAClientes", conectar);
+                SqlCommand cmd = new SqlCommand("sp_listar_clientes", conectar);
                 cmd.CommandType = CommandType.Text;
                 try
                 {
@@ -123,24 +123,6 @@ namespace WebApi.Conexion
             }
         }
         //Buscar Cliente por Nombre o Apellidos
-        public static bool BuscarClientex(string nombre) {
-            using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
-            {
-                SqlCommand cmd = new SqlCommand("select * from Cooperativa.dbo.DBCFAClientes cfa where cfa.nombres like "+nombre+" ", conectarDb);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@nombres", nombre);
-                try
-                {
-                    conectarDb.Open();
-                    cmd.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
-        }
         public static List<Cliente> BuscarCliente(string nombre) {
             List<Cliente> BuscarClientes = new List<Cliente>();
             using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
