@@ -7,3 +7,4 @@ Se construye esta API bajo los siguientes requerimientos:
   - Eliminar Clientes.
   - Consultar Clientes por Nombres o Apellidos.
   - Consultar Clientes por su Documento de Identidad.
+  - Consultar Clientes por rango de fechas, tomando las fechas de nacimiento.
