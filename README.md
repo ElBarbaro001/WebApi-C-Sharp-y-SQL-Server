@@ -9,3 +9,8 @@ Se construye esta API bajo los siguientes requerimientos:
   - Consultar Clientes por Nombres o Apellidos.
   - Consultar Clientes por su Documento de Identidad.
   - Consultar Clientes por rango de fechas, tomando las fechas de nacimiento.
+                
+                DateTime dateTime = DateTime.Now;
+                SqlCommand calcular_edad = new SqlCommand("sp_calcular_edad", conectar);
+                calcular_edad.CommandType = System.Data.CommandType.StoredProcedure;
+                calcular_edad.Parameters.AddWithValue(regCliente.fecha_nacimiento.ToString(), dateTime.ToString());
