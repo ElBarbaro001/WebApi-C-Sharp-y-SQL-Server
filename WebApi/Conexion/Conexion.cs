@@ -2,6 +2,6 @@
 {
     public class Conexion
     {
-        public static string rutaConexion = "Data Source=DEV\\SQLEXPRESS;Initial Catalog=Gestion;Integrated Security=True";
+        public static string rutaConexion = "Data Source=DEV\\SQLEXPRESS;Initial Catalog=Cooperativa;Integrated Security=True";
     }
 }

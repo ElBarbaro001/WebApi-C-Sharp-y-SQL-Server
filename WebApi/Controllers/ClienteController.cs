@@ -11,9 +11,7 @@ namespace WebApi.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
-
         //GET api/<controller>
-        
         [HttpGet]
         [Route("MostrarClientes")]
         public List<Cliente> Get() { 
@@ -61,5 +59,14 @@ namespace WebApi.Controllers
         {
             return EjecutarSentencias.BuscarClienteFecNto(fechainicial,fechafinal);
         }
+        /*
+        //GET api/<controller>/5
+        [HttpGet]
+        [Route("CalcularEdad")]
+        public List<Cliente> Get(string fechanto, string fechactual)
+        {
+            return EjecutarSentencias.CalcularEdadString(fechanto, fechactual);
+        }
+        */
     }
 }

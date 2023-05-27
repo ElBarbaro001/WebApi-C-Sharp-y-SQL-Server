@@ -15,5 +15,6 @@
         public string? tfno_casa { get; set; }
         public string? tfno_trabajo { get; set; }
         public string? email { get; set; }
+        public string? edad { get; set; }
     }
 }
