@@ -59,14 +59,12 @@ namespace WebApi.Controllers
         {
             return EjecutarSentencias.BuscarClienteFecNto(fechainicial,fechafinal);
         }
-        /*
         //GET api/<controller>/5
         [HttpGet]
         [Route("CalcularEdad")]
-        public List<Cliente> Get(string fechanto, string fechactual)
+        public List<Cliente> get(string fechanacimiento)
         {
-            return EjecutarSentencias.CalcularEdadString(fechanto, fechactual);
+            return EjecutarSentencias.CalcularEdad(fechanacimiento);
         }
-        */
     }
 }

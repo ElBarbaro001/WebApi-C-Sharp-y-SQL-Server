@@ -240,47 +240,14 @@ namespace WebApi.Conexion
             }
         }
         //Calcular Edad
-        public static List<Cedad> CalcularEdad(string fechainicial, string fechafinal)
-        {
-            List<Cedad> Listaredad = new List<Cedad>();
-            using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion))
-            {
-                SqlCommand sp = new SqlCommand("sp_calcular_edad", conectar);
-                sp.CommandType = CommandType.StoredProcedure;
-                sp.Parameters.AddWithValue("@fechainicial", fechainicial);
-                sp.Parameters.AddWithValue("@fechafinal", fechafinal);
-                try
-                {
-                    conectar.Open();
-                    sp.ExecuteNonQuery();
-                    using (SqlDataReader leer = sp.ExecuteReader())
-                    {
-                        while (leer.Read())
-                        {
-                            Listaredad.Add(new Cedad()
-                            {
-                                edad = leer["edad"].ToString()
-                            });
-                        }
-                    }
-                    return Listaredad;
-                }
-                catch (Exception ex)
-                {
-
-                    return Listaredad;
-                }
-            }
-        }
-        public static List<Cliente> CalcularEdadString(string fechainicial, string fechafinal)
+        public static List<Cliente> CalcularEdad(string fechanacimiento)
         {
             List<Cliente> Listaredad = new List<Cliente>();
             using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion))
             {
-                SqlCommand sp = new SqlCommand("sp_calcular_edad_string", conectar);
+                SqlCommand sp = new SqlCommand("sp_calcular_edad", conectar);
                 sp.CommandType = CommandType.StoredProcedure;
-                sp.Parameters.AddWithValue("@fechainicial", fechainicial);
-                sp.Parameters.AddWithValue("@fechafinal", fechafinal);
+                sp.Parameters.AddWithValue("@fechanacimiento", fechanacimiento);
                 try
                 {
                     conectar.Open();
@@ -291,7 +258,7 @@ namespace WebApi.Conexion
                         {
                             Listaredad.Add(new Cliente()
                             {
-                                edad = leer["edad"].ToString()
+                                edad = leer["age"].ToString()
                             });
                         }
                     }
