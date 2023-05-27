@@ -1,16 +1,16 @@
 USE [master]
 GO
-/****** Object:  Database [Gestion]    Script Date: 22/05/2023 23:19:23 ******/
-CREATE DATABASE [Gestion]
+/****** Object:  Database [Cooperativa]    Script Date: 22/05/2023 23:19:23 ******/
+CREATE DATABASE [Cooperativa]
 GO
-USE [Gestion]
+USE [Cooperativa]
 GO
-/****** Object:  Table [dbo].[TBClientes]    Script Date: 22/05/2023 23:18:22 ******/
+/****** Object:  Table [dbo].[DBCFAClientes]    Script Date: 22/05/2023 23:18:22 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[TBClientes](
+CREATE TABLE [dbo].[DBCFAClientes](
 	[codigo] [int] IDENTITY(1,1) NOT NULL,
 	[tp_documento] [char](3) NOT NULL,
 	[documento] [int] NOT NULL,
@@ -24,13 +24,13 @@ CREATE TABLE [dbo].[TBClientes](
 	[tfno_casa] [varchar](20) NOT NULL,
 	[tfno_trabajo] [varchar](20) NOT NULL,
 	[email] [varchar](50) NOT NULL,
- CONSTRAINT [PK_TBClientes] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DBCFAClientes] PRIMARY KEY CLUSTERED 
 (
 	[codigo] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-use Gestion
+use Cooperativa
 go
 ---********************************* Validar si Existe el Procedimiento Almacenado ******************************---
 if exists (select * from sys.objects where type = 'P' and name = 'reg_cliente')
@@ -52,7 +52,7 @@ create procedure reg_cliente(
 )
 as 
 begin
-insert into Gestion.dbo.TBClientes(tp_documento,documento,nombres,primer_apellido,segundo_apellido,genero,fecha_nacimiento,dir_casa,dir_trabajo,tfno_casa,tfno_trabajo,email)
+insert into Cooperativa.dbo.DBCFAClientes(tp_documento,documento,nombres,primer_apellido,segundo_apellido,genero,fecha_nacimiento,dir_casa,dir_trabajo,tfno_casa,tfno_trabajo,email)
 values(
 	@tp_documento,
 	@documento,
@@ -78,15 +78,17 @@ begin
 select
 	*
 from
-	Gestion.dbo.TBClientes
+	Cooperativa.dbo.DBCFAClientes
 end
 go
 
 ---************************* Ejecutar Procedimiento Almacenado ***************************************----
-exec reg_cliente 'RC','232','Lucho','Diaz','Presly','M','1979-07-04','Medellin','Medellin','0000000000','0000000000000','tem@gil.com';
-exec reg_cliente 'CC','12322','Real','Falcao','Presly','M','1989-05-30','Medellin','Medellin','0000000000','0000000000000','tem@gil.com';
-exec reg_cliente 'RC','12123','Leb','JJ','Jordan','M','2000-12-31','Medellin','Medellin','0000000000','0000000000000','tem@gil.com';
-exec reg_cliente 'TI','312113','Kobe','Jordan','Presly','M','1950-10-01','Medellin','Medellin','0000000000','0000000000000','tem@gil.com';
+exec reg_cliente 'RC','1076816962','Real','Mosquera','Moreno','M','1986-09-04','El Salvador Medellin','El Salvador Medellin','0000000000','0000000000000','casystem0@gmail.com';
+exec reg_cliente 'TI','1076816965','Ivan','Diaz','Hurtado','M','1986-09-04','El Salvador Medellin','El Salvador Medellin','0000000000','0000000000000','casystem0@gmail.com';
+exec reg_cliente 'CC','1076816967','Andres','Perez','Escobar','M','1986-09-04','El Salvador Medellin','El Salvador Medellin','0000000000','0000000000000','casystem0@gmail.com';
+exec reg_cliente 'CC','2076816967','Mayor','Perez','Escobar','M','1986-09-04','El Salvador Medellin','El Salvador Medellin','0000000000','0000000000000','casystem0@gmail.com';
+exec reg_cliente 'RC','976816967','Mediano','Perez','Escobar','M','1986-09-04','El Salvador Medellin','El Salvador Medellin','0000000000','0000000000000','casystem0@gmail.com';
+exec reg_cliente 'TI','376816967','Menor','Perez','Escobar','M','1986-09-04','El Salvador Medellin','El Salvador Medellin','0000000000','0000000000000','casystem0@gmail.com';
 ----******************-------------------------
 exec sp_listar_clientes;
 ---************************************************-------------
@@ -94,7 +96,7 @@ exec sp_listar_clientes;
 select
 	*
 from
-	Gestion.dbo.TBClientes
+	Cooperativa.dbo.DBCFAClientes
 order by documento desc
 
 go
@@ -108,12 +110,12 @@ create procedure sp_eliminar_cliente(
 as
 begin
 delete from 
-	Gestion.dbo.TBClientes
+	Cooperativa.dbo.DBCFAClientes
 where 
-	dbo.TBClientes.documento = @documento
+	dbo.DBCFAClientes.documento = @documento
 end
 go
-exec sp_eliminar_cliente '123';
+exec sp_eliminar_cliente '1076816963';
 go
 -------------------- ************************** Procedimiento para Modificar los Datos de un Cliente ---------------- ********************************
 if exists (select * from sys.objects where type = 'P' and name = 'sp_modificar_cliente')
@@ -127,7 +129,7 @@ create procedure sp_modificar_cliente(
 )
 as
 begin
-update Gestion.dbo.TBClientes set 
+update Cooperativa.dbo.DBCFAClientes set 
 tp_documento = @tp_documento,
 documento = @documento,
 fecha_nacimiento = @fecha_nacimiento
@@ -138,7 +140,7 @@ exec sp_modificar_cliente 655,'RC','123','2000-01-01';
 go
 select 
 	*
-	from Gestion.dbo.TBClientes
+	from Cooperativa.dbo.DBCFAClientes
 ------------------ ******************** Filtros Consultar Cliente por Nombre Completo -------------- **************************
 
 ------------------------------***************Buscar Clientes ********************-
@@ -153,11 +155,11 @@ begin
 select 
 	* 
 from 
-	Gestion.dbo.TBClientes
+	Cooperativa.dbo.DBCFAClientes
 where 
-	Gestion.dbo.TBClientes.nombres like '%'+@cadena+'%' or  
-	Gestion.dbo.TBClientes.primer_apellido like '%'+@cadena+'%' or 
-	Gestion.dbo.TBClientes.segundo_apellido like '%'+@cadena+'%'
+	Cooperativa.dbo.DBCFAClientes.nombres like '%'+@cadena+'%' or  
+	Cooperativa.dbo.DBCFAClientes.primer_apellido like '%'+@cadena+'%' or 
+	Cooperativa.dbo.DBCFAClientes.segundo_apellido like '%'+@cadena+'%'
 order by nombres ASC
 end
 go
@@ -180,9 +182,9 @@ select
 	primer_apellido,
 	segundo_apellido
 from 
-	Gestion.dbo.TBClientes
+	Cooperativa.dbo.DBCFAClientes
 where 
-	Gestion.dbo.TBClientes.documento = @documento
+	Cooperativa.dbo.DBCFAClientes.documento = @documento
 order by documento desc
 end
 go
@@ -206,9 +208,9 @@ select
 	primer_apellido,
 	segundo_apellido
 from 
-	Gestion.dbo.TBClientes
+	Cooperativa.dbo.DBCFAClientes
 where 
-	Gestion.dbo.TBClientes.fecha_nacimiento between  @fechainicial  and @fechafinal
+	Cooperativa.dbo.DBCFAClientes.fecha_nacimiento between  @fechainicial  and @fechafinal
 order by fecha_nacimiento asc
 end
 go
@@ -218,8 +220,91 @@ exec sp_buscar_cliente_fecnato '1980-01-01 00:00:00','2000-01-01 00:00:00'
 select 
 	*
 from
-	Gestion.dbo.TBClientes
+	Cooperativa.dbo.DBCFAClientes
 where 
-	dbo.TBClientes.tfno_casa <> null and
-	dbo.TBClientes.tfno_trabajo <> null;
-exec reg_cliente 'TI','312113','Kobe','Jordan','Presly','M','1950-10-01','Medellin','Medellin',null,'0000000000000','tem@gil.com';
+	dbo.DBCFAClientes.tfno_casa <> null and
+	dbo.DBCFAClientes.tfno_trabajo <> null;
+exec reg_cliente 'TI','376816968','Menor','Perez','Rodriguez','M','1980-11-11','Medellin','Medellin','0000000000','0000000000000','ca@gmail.com';
+
+go
+
+if exists (select * from sys.objects where type = 'P' and name = 'sp_leer_documentos')
+drop procedure sp_leer_documentos
+go
+create procedure sp_leer_documentos
+as 
+begin
+select
+	c.documento
+from 
+	Cooperativa.dbo.DBCFAClientes c
+where c.documento = '376816967'
+end
+go
+
+create index documento
+on Cooperativa.dbo.DBCFAClientes(documento);
+exec reg_cliente 'TI','376816968','Menor','Perez','Rodriguez','M','1980-11-11','Medellin','Medellin','0000000000','0000000000000','ca@gmail.com';
+exec sp_listar_clientes
+exec sp_eliminar_cliente '376816967'
+select * from Cooperativa.dbo.DBCFAClientes
+go
+if exists (select * from sys.objects where type = 'P' and name = 'sp_listar_clientes')
+drop procedure sp_listar_clientes
+go
+create procedure sp_listar_clientes
+as 
+begin
+select
+	c.codigo,
+	c.tp_documento,
+	c.documento,
+	c.nombres,
+	c.primer_apellido,
+	c.segundo_apellido,
+	c.genero,
+	c.fecha_nacimiento,
+	c.dir_casa,
+	c.dir_trabajo,
+	c.tfno_casa,
+	c.tfno_trabajo,
+	c.email
+from
+	Cooperativa.dbo.DBCFAClientes c
+end
+exec sp_listar_clientes
+exec sp_eliminar_cliente '376816968'
+exec reg_cliente 'TI','376816968','Menor','Perez','Rodriguez','M','1980-11-11','Medellin','Medellin','0000000000','0000000000000','ca@gmail.com';
+
+
+SELECT DATEDIFF(year,'2006-01-01 00:00:00.0000000','2023-04-25') edad;
+if exists (select * from sys.objects where type = 'P' and name = 'sp_calcular_edad')
+drop procedure sp_calcular_edad
+go
+create procedure sp_calcular_edad(
+	@fechanacimiento varchar(20),
+	@fechactual varchar(20)
+)
+as
+begin
+SELECT DATEDIFF(year,@fechanacimiento,@fechactual) age;
+end
+
+exec sp_calcular_edad '2000-09-04','2023-05-25'
+exec sp_listar_clientes
+
+-----------************************** Funcion Calcular edad pasando un solo parametro
+if exists (select * from sys.objects where type = 'P' and name = 'sp_calcular_edad')
+drop procedure sp_calcular_edad
+go
+create procedure sp_calcular_edad(
+	@fechanacimiento varchar(20)
+)
+as
+begin
+SELECT DATEDIFF(year,@fechanacimiento,GETDATE()) age;
+end
+
+select DATEDIFF(year,'2000',GETDATE())age;
+
+exec sp_calcular_edad '2000'
