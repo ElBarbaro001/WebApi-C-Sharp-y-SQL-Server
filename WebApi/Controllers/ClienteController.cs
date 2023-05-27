@@ -14,55 +14,55 @@ namespace WebApi.Controllers
         //GET api/<controller>
         [HttpGet]
         [Route("MostrarClientes")]
-        public List<Cliente> Get() { 
+        public List<Cliente> Listar() { 
             return EjecutarSentencias.Listar();
         }
         // POST api/<controller>
         [HttpPost]
         [Route("IngresarClientes")]
-        public bool Post([FromBody] Cliente regCliente)
+        public bool Insertar([FromBody] Cliente regCliente)
         {
             return EjecutarSentencias.RegistarCliente(regCliente);
         }
         // DELETE api/<controller>/5
         [HttpDelete]
         [Route("EliminarClientes")]
-        public bool Delete(int doc)
+        public bool Eliminar(int doc)
         {
             return EjecutarSentencias.EliminarCliente(doc);
         }
         // PUT api/<controller>/5
         [HttpPut]
         [Route("ModificarClientes")]
-        public bool Put([FromBody] Cliente modCliente)
+        public bool Modificar([FromBody] Cliente modCliente)
         {
             return EjecutarSentencias.ModificarCliente(modCliente);
         }
         //GET api/<controller>/5
         [HttpGet]
         [Route("BuscarClientes")]
-        public List<Cliente> Get(string nombre)
+        public List<Cliente> Buscar(string nombre)
         {
             return EjecutarSentencias.BuscarCliente(nombre);
         }
         //GET api/<controller>/5
         [HttpGet]
         [Route("BuscarClientesDoc")]
-        public List<Cliente> Get(int documento)
+        public List<Cliente> BuscarDoc(int documento)
         {
             return EjecutarSentencias.BuscarClientexDocumento(documento);
         }
         //GET api/<controller>/5
         [HttpGet]
         [Route("BuscarClientesFechancto")]
-        public List<Cliente> Get(DateTime fechainicial, DateTime fechafinal)
+        public List<Cliente> BuscarFec(DateTime fechainicial, DateTime fechafinal)
         {
             return EjecutarSentencias.BuscarClienteFecNto(fechainicial,fechafinal);
         }
         //GET api/<controller>/5
         [HttpGet]
         [Route("CalcularEdad")]
-        public List<Cliente> get(string fechanacimiento)
+        public List<Cliente> Calcular(string fechanacimiento)
         {
             return EjecutarSentencias.CalcularEdad(fechanacimiento);
         }
