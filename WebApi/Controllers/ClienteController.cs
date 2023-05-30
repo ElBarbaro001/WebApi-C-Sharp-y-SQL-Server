@@ -27,9 +27,9 @@ namespace WebApi.Controllers
         // DELETE api/<controller>/5
         [HttpDelete]
         [Route("EliminarClientes")]
-        public bool Eliminar(int doc)
+        public void Eliminar(int doc)
         {
-            return EjecutarSentencias.EliminarCliente(doc);
+            EjecutarSentencias.EliminarCliente(doc);
         }
         // PUT api/<controller>/5
         [HttpPut]
@@ -62,7 +62,7 @@ namespace WebApi.Controllers
         //GET api/<controller>/5
         [HttpGet]
         [Route("CalcularEdad")]
-        public List<Cliente> Calcular(string fechanacimiento)
+        public List<Cliente> CalcularEdad(string fechanacimiento)
         {
             return EjecutarSentencias.CalcularEdad(fechanacimiento);
         }

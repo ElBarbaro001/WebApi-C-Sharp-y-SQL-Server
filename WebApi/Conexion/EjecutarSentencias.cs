@@ -7,6 +7,9 @@ using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;
 using System;
 using WebApi.Controllers;
+using System.Text.Encodings.Web;
+using System.Xml.Linq;
+using System.Security.Cryptography;
 
 namespace WebApi.Conexion
 {
@@ -88,7 +91,6 @@ namespace WebApi.Conexion
                 SqlCommand cmd = new SqlCommand("sp_eliminar_cliente", conectarDb);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@documento", documento);
-
                 try
                 {
                     conectarDb.Open();
