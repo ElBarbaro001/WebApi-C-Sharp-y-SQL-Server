@@ -10,6 +10,7 @@ using WebApi.Controllers;
 using System.Text.Encodings.Web;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace WebApi.Conexion
 {
@@ -31,7 +32,15 @@ namespace WebApi.Conexion
                 cmd.Parameters.AddWithValue("@dir_trabajo", regCliente.dir_trabajo);
                 cmd.Parameters.AddWithValue("@tfno_casa", regCliente.tfno_casa);
                 cmd.Parameters.AddWithValue("@tfno_trabajo", regCliente.tfno_trabajo);
-                cmd.Parameters.AddWithValue("@email", regCliente.email);
+                //Evaluar Email con una Expresion Regular
+                string email = regCliente.email;
+                Regex t = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = t.Match(email);
+                if (match.Success)
+
+                    cmd.Parameters.AddWithValue("@email", regCliente.email);
+                else
+                    Console.Write("Error!!!");
                 try
                 {
                     conectar.Open();
