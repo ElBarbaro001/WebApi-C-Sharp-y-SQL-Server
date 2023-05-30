@@ -1,9 +1,9 @@
 USE [master]
 GO
-/****** Object:  Database [Cooperativa]    Script Date: 22/05/2023 23:19:23 ******/
-CREATE DATABASE [Cooperativa]
+/****** Object:  Database [Gestion]    Script Date: 22/05/2023 23:19:23 ******/
+CREATE DATABASE [Gestion]
 GO
-USE [Cooperativa]
+USE [Gestion]
 GO
 /****** Object:  Table [dbo].[DBCFAClientes]    Script Date: 22/05/2023 23:18:22 ******/
 SET ANSI_NULLS ON
@@ -30,8 +30,17 @@ CREATE TABLE [dbo].[DBCFAClientes](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-use Cooperativa
+use Gestion
 go
+CREATE TABLE [dbo].[TipoDocumento](
+	[codigo_documento] [int] IDENTITY(1,1) NOT NULL,
+	[tp_documento] [char](3) NOT NULL,
+	[descripcion] [varchar](30) NOT NULL,
+ CONSTRAINT [PK_TipoDocumento] PRIMARY KEY CLUSTERED 
+(
+	[codigo_documento] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 ---********************************* Validar si Existe el Procedimiento Almacenado ******************************---
 if exists (select * from sys.objects where type = 'P' and name = 'reg_cliente')
 drop procedure reg_cliente
@@ -52,7 +61,7 @@ create procedure reg_cliente(
 )
 as 
 begin
-insert into Cooperativa.dbo.DBCFAClientes(tp_documento,documento,nombres,primer_apellido,segundo_apellido,genero,fecha_nacimiento,dir_casa,dir_trabajo,tfno_casa,tfno_trabajo,email)
+insert into Gestion.dbo.DBCFAClientes(tp_documento,documento,nombres,primer_apellido,segundo_apellido,genero,fecha_nacimiento,dir_casa,dir_trabajo,tfno_casa,tfno_trabajo,email)
 values(
 	@tp_documento,
 	@documento,
@@ -78,7 +87,7 @@ begin
 select
 	*
 from
-	Cooperativa.dbo.DBCFAClientes
+	Gestion.dbo.DBCFAClientes
 end
 go
 
@@ -96,7 +105,7 @@ exec sp_listar_clientes;
 select
 	*
 from
-	Cooperativa.dbo.DBCFAClientes
+	Gestion.dbo.DBCFAClientes
 order by documento desc
 
 go
@@ -110,7 +119,7 @@ create procedure sp_eliminar_cliente(
 as
 begin
 delete from 
-	Cooperativa.dbo.DBCFAClientes
+	Gestion.dbo.DBCFAClientes
 where 
 	dbo.DBCFAClientes.documento = @documento
 end
@@ -129,7 +138,7 @@ create procedure sp_modificar_cliente(
 )
 as
 begin
-update Cooperativa.dbo.DBCFAClientes set 
+update Gestion.dbo.DBCFAClientes set 
 tp_documento = @tp_documento,
 documento = @documento,
 fecha_nacimiento = @fecha_nacimiento
@@ -140,7 +149,7 @@ exec sp_modificar_cliente 655,'RC','123','2000-01-01';
 go
 select 
 	*
-	from Cooperativa.dbo.DBCFAClientes
+	from Gestion.dbo.DBCFAClientes
 ------------------ ******************** Filtros Consultar Cliente por Nombre Completo -------------- **************************
 
 ------------------------------***************Buscar Clientes ********************-
@@ -155,11 +164,11 @@ begin
 select 
 	* 
 from 
-	Cooperativa.dbo.DBCFAClientes
+	Gestion.dbo.DBCFAClientes
 where 
-	Cooperativa.dbo.DBCFAClientes.nombres like '%'+@cadena+'%' or  
-	Cooperativa.dbo.DBCFAClientes.primer_apellido like '%'+@cadena+'%' or 
-	Cooperativa.dbo.DBCFAClientes.segundo_apellido like '%'+@cadena+'%'
+	Gestion.dbo.DBCFAClientes.nombres like '%'+@cadena+'%' or  
+	Gestion.dbo.DBCFAClientes.primer_apellido like '%'+@cadena+'%' or 
+	Gestion.dbo.DBCFAClientes.segundo_apellido like '%'+@cadena+'%'
 order by nombres ASC
 end
 go
@@ -182,9 +191,9 @@ select
 	primer_apellido,
 	segundo_apellido
 from 
-	Cooperativa.dbo.DBCFAClientes
+	Gestion.dbo.DBCFAClientes
 where 
-	Cooperativa.dbo.DBCFAClientes.documento = @documento
+	Gestion.dbo.DBCFAClientes.documento = @documento
 order by documento desc
 end
 go
@@ -208,9 +217,9 @@ select
 	primer_apellido,
 	segundo_apellido
 from 
-	Cooperativa.dbo.DBCFAClientes
+	Gestion.dbo.DBCFAClientes
 where 
-	Cooperativa.dbo.DBCFAClientes.fecha_nacimiento between  @fechainicial  and @fechafinal
+	Gestion.dbo.DBCFAClientes.fecha_nacimiento between  @fechainicial  and @fechafinal
 order by fecha_nacimiento asc
 end
 go
@@ -220,7 +229,7 @@ exec sp_buscar_cliente_fecnato '1980-01-01 00:00:00','2000-01-01 00:00:00'
 select 
 	*
 from
-	Cooperativa.dbo.DBCFAClientes
+	Gestion.dbo.DBCFAClientes
 where 
 	dbo.DBCFAClientes.tfno_casa <> null and
 	dbo.DBCFAClientes.tfno_trabajo <> null;
@@ -237,17 +246,17 @@ begin
 select
 	c.documento
 from 
-	Cooperativa.dbo.DBCFAClientes c
+	Gestion.dbo.DBCFAClientes c
 where c.documento = '376816967'
 end
 go
 
 create index documento
-on Cooperativa.dbo.DBCFAClientes(documento);
+on Gestion.dbo.DBCFAClientes(documento);
 exec reg_cliente 'TI','376816968','Menor','Perez','Rodriguez','M','1980-11-11','Medellin','Medellin','0000000000','0000000000000','ca@gmail.com';
 exec sp_listar_clientes
 exec sp_eliminar_cliente '376816967'
-select * from Cooperativa.dbo.DBCFAClientes
+select * from Gestion.dbo.DBCFAClientes
 go
 if exists (select * from sys.objects where type = 'P' and name = 'sp_listar_clientes')
 drop procedure sp_listar_clientes
@@ -270,7 +279,7 @@ select
 	c.tfno_trabajo,
 	c.email
 from
-	Cooperativa.dbo.DBCFAClientes c
+	Gestion.dbo.DBCFAClientes c
 end
 exec sp_listar_clientes
 exec sp_eliminar_cliente '376816968'
