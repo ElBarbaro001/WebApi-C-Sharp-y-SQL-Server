@@ -30,7 +30,9 @@ namespace WebApi.Conexion
                 cmd.Parameters.AddWithValue("@fecha_nacimiento", regCliente.fecha_nacimiento);
                 cmd.Parameters.AddWithValue("@dir_casa", regCliente.dir_casa);
                 cmd.Parameters.AddWithValue("@dir_trabajo", regCliente.dir_trabajo);
+                //Evaluar Telefono Fijo
                 cmd.Parameters.AddWithValue("@tfno_casa", regCliente.tfno_casa);
+
                 cmd.Parameters.AddWithValue("@tfno_trabajo", regCliente.tfno_trabajo);
                 //Evaluar Email con una Expresion Regular
                 string email = regCliente.email;
@@ -39,8 +41,7 @@ namespace WebApi.Conexion
                 if (match.Success)
 
                     cmd.Parameters.AddWithValue("@email", regCliente.email);
-                else
-                    Console.Write("Error!!!");
+
                 try
                 {
                     conectar.Open();
