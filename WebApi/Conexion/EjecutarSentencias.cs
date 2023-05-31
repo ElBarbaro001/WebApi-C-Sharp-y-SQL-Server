@@ -19,6 +19,14 @@ namespace WebApi.Conexion
         //Metodo para Insertar los Datos del Cliente en la Base de Datos
         public static bool RegistarCliente(Cliente regCliente) {
             using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion)) { 
+                /*
+                SqlCommand edad = new SqlCommand("sp_calcular_edad",conectar);
+                edad.CommandType = CommandType.StoredProcedure;
+                edad.Parameters.AddWithValue("@fecha_nacimiento",regCliente.fecha_nacimiento);
+                conectar.Open();
+                edad.ExecuteNonQuery();
+                */
+                //Insertar los Datos a la Tabla
                 SqlCommand cmd = new SqlCommand("reg_cliente", conectar);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@tp_documento", regCliente.tp_documento);
@@ -30,18 +38,18 @@ namespace WebApi.Conexion
                 cmd.Parameters.AddWithValue("@fecha_nacimiento", regCliente.fecha_nacimiento);
                 cmd.Parameters.AddWithValue("@dir_casa", regCliente.dir_casa);
                 cmd.Parameters.AddWithValue("@dir_trabajo", regCliente.dir_trabajo);
-                //Evaluar Telefono Fijo
+                //Expresion para Telefono Fijo ^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$ -> +(604) - 216-19-46
                 cmd.Parameters.AddWithValue("@tfno_casa", regCliente.tfno_casa);
-
                 cmd.Parameters.AddWithValue("@tfno_trabajo", regCliente.tfno_trabajo);
                 //Evaluar Email con una Expresion Regular
-                string email = regCliente.email;
-                Regex t = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-                Match match = t.Match(email);
+                string correo = regCliente.email;
+                Regex formato = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = formato.Match(correo);
                 if (match.Success)
 
                     cmd.Parameters.AddWithValue("@email", regCliente.email);
-
+                else
+                    Console.WriteLine("El email ingresado no cumple con el formato correcto.");
                 try
                 {
                     conectar.Open();
@@ -59,7 +67,7 @@ namespace WebApi.Conexion
             List<Cliente> ListarClientes = new List<Cliente>();
             using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion)) {
                 SqlCommand cmd = new SqlCommand("sp_listar_clientes", conectar);
-                cmd.CommandType = CommandType.Text;
+                cmd.CommandType = CommandType.StoredProcedure;
                 try
                 {
                     conectar.Open();
@@ -175,7 +183,7 @@ namespace WebApi.Conexion
                 catch (Exception ex)
                 {
 
-                    return BuscarClientes;
+                   return BuscarClientes;
                 }
             }
         }
@@ -257,14 +265,14 @@ namespace WebApi.Conexion
             List<Cliente> Listaredad = new List<Cliente>();
             using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion))
             {
-                SqlCommand sp = new SqlCommand("sp_calcular_edad", conectar);
-                sp.CommandType = CommandType.StoredProcedure;
-                sp.Parameters.AddWithValue("@fechanacimiento", fechanacimiento);
+                SqlCommand consulta = new SqlCommand("sp_calcular_edad", conectar);
+                consulta.CommandType = CommandType.StoredProcedure;
+                consulta.Parameters.AddWithValue("@fechanacimiento", fechanacimiento);
                 try
                 {
                     conectar.Open();
-                    sp.ExecuteNonQuery();
-                    using (SqlDataReader leer = sp.ExecuteReader())
+                    consulta.ExecuteNonQuery();
+                    using (SqlDataReader leer = consulta.ExecuteReader())
                     {
                         while (leer.Read())
                         {

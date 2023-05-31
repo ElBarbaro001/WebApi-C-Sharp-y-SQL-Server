@@ -90,7 +90,6 @@ from
 	Gestion.dbo.DBCFAClientes
 end
 go
-
 ---************************* Ejecutar Procedimiento Almacenado ***************************************----
 exec reg_cliente 'RC','1076816962','Real','Mosquera','Moreno','M','1986-09-04','El Salvador Medellin','El Salvador Medellin','0000000000','0000000000000','casystem0@gmail.com';
 exec reg_cliente 'TI','1076816965','Ivan','Diaz','Hurtado','M','1986-09-04','El Salvador Medellin','El Salvador Medellin','0000000000','0000000000000','casystem0@gmail.com';
@@ -101,13 +100,11 @@ exec reg_cliente 'TI','376816967','Menor','Perez','Escobar','M','1986-09-04','El
 ----******************-------------------------
 exec sp_listar_clientes;
 ---************************************************-------------
-
 select
 	*
 from
 	Gestion.dbo.DBCFAClientes
 order by documento desc
-
 go
 --------******************************** Procedimiento para Eliminar un Cliente mediante su Documento de Identidad --------*******************************
 if exists (select * from sys.objects where type = 'P' and name = 'sp_eliminar_cliente')
@@ -151,7 +148,6 @@ select
 	*
 	from Gestion.dbo.DBCFAClientes
 ------------------ ******************** Filtros Consultar Cliente por Nombre Completo -------------- **************************
-
 ------------------------------***************Buscar Clientes ********************-
 if exists (select * from sys.objects where type = 'P' and name = 'sp_buscar_cliente')
 drop procedure sp_buscar_cliente
@@ -175,7 +171,6 @@ go
 ------------------- *******************   Consultar los clientes por número de documento, 
 ---------------------------------------   el resultado de la búsqueda debe organizarse de mayor a menor, 
 ---------------------------------------   mostrando el número de documento y nombre completo del cliente.  *************----------------------
-
 if exists (select * from sys.objects where type = 'P' and name = 'sp_buscar_cliente_documento')
 drop procedure sp_buscar_cliente_documento
 go
@@ -197,11 +192,9 @@ where
 order by documento desc
 end
 go
-
 -------------------********************* Consultar los clientes por fecha de nacimiento, 
 ---------------------------------------- de acuerdo a la elección de un rango de fechas, es decir debe permitir elegir una fecha inicial y final de consulta,  
 ----------------------------------------- el resultado debe permitir visualizar los clientes de acuerdo a la fecha de nacimiento más antigua a la más reciente , seguida del nombre completo del cliente.
-
 if exists (select * from sys.objects where type = 'P' and name = 'sp_buscar_cliente_fecnato')
 drop procedure sp_buscar_cliente_fecnato
 go
@@ -234,9 +227,7 @@ where
 	dbo.DBCFAClientes.tfno_casa <> null and
 	dbo.DBCFAClientes.tfno_trabajo <> null;
 exec reg_cliente 'TI','376816968','Menor','Perez','Rodriguez','M','1980-11-11','Medellin','Medellin','0000000000','0000000000000','ca@gmail.com';
-
 go
-
 if exists (select * from sys.objects where type = 'P' and name = 'sp_leer_documentos')
 drop procedure sp_leer_documentos
 go
@@ -250,7 +241,6 @@ from
 where c.documento = '376816967'
 end
 go
-
 create index documento
 on Gestion.dbo.DBCFAClientes(documento);
 exec reg_cliente 'TI','376816968','Menor','Perez','Rodriguez','M','1980-11-11','Medellin','Medellin','0000000000','0000000000000','ca@gmail.com';
@@ -284,8 +274,6 @@ end
 exec sp_listar_clientes
 exec sp_eliminar_cliente '376816968'
 exec reg_cliente 'TI','376816968','Menor','Perez','Rodriguez','M','1980-11-11','Medellin','Medellin','0000000000','0000000000000','ca@gmail.com';
-
-
 SELECT DATEDIFF(year,'2006-01-01 00:00:00.0000000','2023-04-25') edad;
 if exists (select * from sys.objects where type = 'P' and name = 'sp_calcular_edad')
 drop procedure sp_calcular_edad
@@ -298,10 +286,8 @@ as
 begin
 SELECT DATEDIFF(year,@fechanacimiento,@fechactual) age;
 end
-
 exec sp_calcular_edad '2000-09-04','2023-05-25'
 exec sp_listar_clientes
-
 -----------************************** Funcion Calcular edad pasando un solo parametro
 if exists (select * from sys.objects where type = 'P' and name = 'sp_calcular_edad')
 drop procedure sp_calcular_edad
@@ -313,7 +299,5 @@ as
 begin
 SELECT DATEDIFF(year,@fechanacimiento,GETDATE()) age;
 end
-
 select DATEDIFF(year,'2000',GETDATE())age;
-
 exec sp_calcular_edad '2000'
