@@ -17,8 +17,10 @@ namespace WebApi.Conexion
     public class EjecutarSentencias
     {
         //Metodo para Insertar los Datos del Cliente en la Base de Datos
-        public static bool RegistarCliente(Cliente regCliente) {
-            using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion)) { 
+        public static bool RegistarCliente(Cliente regCliente)
+        {
+            using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion))
+            {
                 /*
                 SqlCommand edad = new SqlCommand("sp_calcular_edad",conectar);
                 edad.CommandType = CommandType.StoredProcedure;
@@ -63,19 +65,23 @@ namespace WebApi.Conexion
             }
         }
         //Listar Clientes que se encuentrar registrados en la Tabla
-        public static List<Cliente> Listar() { 
+        public static List<Cliente> Listar()
+        {
             List<Cliente> ListarClientes = new List<Cliente>();
-            using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion)) {
+            using (SqlConnection conectar = new SqlConnection(Conexion.rutaConexion))
+            {
                 SqlCommand cmd = new SqlCommand("sp_listar_clientes", conectar);
                 cmd.CommandType = CommandType.StoredProcedure;
                 try
                 {
                     conectar.Open();
                     cmd.ExecuteNonQuery();
-                    using (SqlDataReader leer = cmd.ExecuteReader()) { 
+                    using (SqlDataReader leer = cmd.ExecuteReader())
+                    {
                         while (leer.Read())
                         {
-                            ListarClientes.Add(new Cliente() { 
+                            ListarClientes.Add(new Cliente()
+                            {
                                 codigo = Convert.ToInt32(leer["codigo"]),
                                 tp_documento = leer["tp_documento"].ToString(),
                                 documento = Convert.ToInt32(leer["documento"].ToString()),
@@ -145,7 +151,8 @@ namespace WebApi.Conexion
             }
         }
         //Buscar Cliente por Nombre o Apellidos
-        public static List<Cliente> BuscarCliente(string nombre) {
+        public static List<Cliente> BuscarCliente(string nombre)
+        {
             List<Cliente> BuscarClientes = new List<Cliente>();
             using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
             {
@@ -183,7 +190,7 @@ namespace WebApi.Conexion
                 catch (Exception ex)
                 {
 
-                   return BuscarClientes;
+                    return BuscarClientes;
                 }
             }
         }
@@ -231,7 +238,7 @@ namespace WebApi.Conexion
             {
                 SqlCommand cmd = new SqlCommand("sp_buscar_cliente_fecnato", conectarDb);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@fechainicial",Convert.ToDateTime(fechainicial).ToString());
+                cmd.Parameters.AddWithValue("@fechainicial", Convert.ToDateTime(fechainicial).ToString());
                 cmd.Parameters.AddWithValue("@fechafinal", Convert.ToDateTime(fechafinal).ToString());
                 try
                 {
@@ -246,7 +253,7 @@ namespace WebApi.Conexion
                                 nombres = leer["nombres"].ToString(),
                                 primer_apellido = leer["primer_apellido"].ToString(),
                                 segundo_apellido = leer["segundo_apellido"].ToString(),
-                                fecha_nacimiento =Convert.ToDateTime(leer["fecha_nacimiento"].ToString()),
+                                fecha_nacimiento = Convert.ToDateTime(leer["fecha_nacimiento"].ToString()),
                             });
                         }
                     }
@@ -287,6 +294,41 @@ namespace WebApi.Conexion
                 catch (Exception ex)
                 {
                     return Listaredad;
+                }
+            }
+        }
+        //Listar Clientes con mas de un telefono Registrado
+        public static List<Telefonos> ListarTelefonos()
+        {
+            List<Telefonos> ListarTelefonos = new List<Telefonos>();
+            using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_telefonos", conectarDb);
+                cmd.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    conectarDb.Open();
+                    cmd.ExecuteNonQuery();
+                    using (SqlDataReader leer = cmd.ExecuteReader())
+                    {
+                        while (leer.Read())
+                        {
+                            ListarTelefonos.Add(new Telefonos()
+                            {
+                                nombres = leer["nombres"].ToString(),
+                                primer_apellido = leer["primer_apellido"].ToString(),
+                                segundo_apellido = leer["segundo_apellido"].ToString(),
+                                tfno_casa = leer["tfno_casa"].ToString(),
+                                tfno_trabajo = leer["tfno_trabajo"].ToString()
+                            });
+                        }
+                    }
+                    return ListarTelefonos;
+                }
+                catch (Exception ex)
+                {
+
+                    return ListarTelefonos;
                 }
             }
         }

@@ -66,5 +66,12 @@ namespace WebApi.Controllers
         {
             return EjecutarSentencias.CalcularEdad(fechanacimiento);
         }
+        //GET api/<controller>/5
+        [HttpGet]
+        [Route("ListarTelefonos")]
+        public List<Telefonos> ListarTelefonos()
+        {
+            return EjecutarSentencias.ListarTelefonos();
+        }
     }
 }
