@@ -323,3 +323,25 @@ from Gestion.dbo.DBCFAClientes c) as D
 where tfno_casa != 0 or tfno_trabajo != 0
 group by nombres, primer_apellido, segundo_apellido,tfno_casa,tfno_trabajo
 end
+--------Consultar los clientes que tienen más de una dirección registrada, 
+---------el resultado a mostrar debe devolver la primera dirección, seguida del nombre completo por cada cliente.
+if exists (select * from sys.objects where type = 'P' and name = 'sp_direcciones')
+drop procedure sp_direcciones
+go
+create procedure sp_direcciones
+as
+begin
+select 
+	dir_casa,
+	nombres,
+	primer_apellido,
+	segundo_apellido
+from (
+select 
+	*
+from Cooperativa.dbo.DBCFAClientes c) as D
+where dir_casa != '' and dir_trabajo != ''
+group by dir_casa,nombres, primer_apellido, segundo_apellido
+end
+
+exec sp_direcciones

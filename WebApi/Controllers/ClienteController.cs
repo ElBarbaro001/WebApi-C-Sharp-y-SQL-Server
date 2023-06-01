@@ -73,5 +73,12 @@ namespace WebApi.Controllers
         {
             return EjecutarSentencias.ListarTelefonos();
         }
+        //GET api/<controller>/5
+        [HttpGet]
+        [Route("ListarDirecciones")]
+        public List<Direcciones> ListarDirecciones()
+        {
+            return EjecutarSentencias.ListarDirecciones();
+        }
     }
 }

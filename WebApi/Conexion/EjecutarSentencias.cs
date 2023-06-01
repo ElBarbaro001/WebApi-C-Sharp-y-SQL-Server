@@ -332,5 +332,39 @@ namespace WebApi.Conexion
                 }
             }
         }
+        //Listar Clientes con mas de una Direccion Registrada
+        public static List<Direcciones> ListarDirecciones()
+        {
+            List<Direcciones> ListarDirecciones = new List<Direcciones>();
+            using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_direcciones", conectarDb);
+                cmd.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    conectarDb.Open();
+                    cmd.ExecuteNonQuery();
+                    using (SqlDataReader leer = cmd.ExecuteReader())
+                    {
+                        while (leer.Read())
+                        {
+                            ListarDirecciones.Add(new Direcciones()
+                            {
+                                dir_casa = leer["dir_casa"].ToString(),
+                                nombres = leer["nombres"].ToString(),
+                                primer_apellido = leer["primer_apellido"].ToString(),
+                                segundo_apellido = leer["segundo_apellido"].ToString()
+                            });
+                        }
+                    }
+                    return ListarDirecciones;
+                }
+                catch (Exception ex)
+                {
+
+                    return ListarDirecciones;
+                }
+            }
+        }
     }
 }
