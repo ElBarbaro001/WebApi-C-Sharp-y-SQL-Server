@@ -319,7 +319,7 @@ select
 from (
 select 
 	*
-from Cooperativa.dbo.DBCFAClientes c) as D
+from Gestion.dbo.DBCFAClientes c) as D
 where tfno_casa != 0 or tfno_trabajo != 0
 group by nombres, primer_apellido, segundo_apellido,tfno_casa,tfno_trabajo
 end
