@@ -286,7 +286,6 @@ namespace WebApi.Conexion
                 }
                 catch (Exception ex)
                 {
-
                     return Listaredad;
                 }
             }
