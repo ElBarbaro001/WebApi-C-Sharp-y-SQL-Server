@@ -301,3 +301,25 @@ SELECT DATEDIFF(year,@fechanacimiento,GETDATE()) age;
 end
 select DATEDIFF(year,'2000',GETDATE())age;
 exec sp_calcular_edad '2000'
+---------------- Consultar los clientes que tienen más de un teléfono, el resultado de la búsqueda debe 
+-----          retornar el nombre completo del cliente y la cantidad de números registrados en base de datos. 
+------- PRocedimiento 
+if exists (select * from sys.objects where type = 'P' and name = 'sp_telefonos')
+drop procedure sp_telefonos
+go
+create procedure sp_telefonos
+as
+begin
+select 
+	nombres,
+	primer_apellido,
+	segundo_apellido,
+	tfno_casa,
+	tfno_trabajo
+from (
+select 
+	*
+from Cooperativa.dbo.DBCFAClientes c) as D
+where tfno_casa != 0 or tfno_trabajo != 0
+group by nombres, primer_apellido, segundo_apellido,tfno_casa,tfno_trabajo
+end
