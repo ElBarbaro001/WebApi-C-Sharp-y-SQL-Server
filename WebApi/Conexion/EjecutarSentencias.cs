@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Xml.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace WebApi.Conexion
 {
@@ -288,6 +289,11 @@ namespace WebApi.Conexion
                                 edad = leer["age"].ToString()
                             });
                         }
+                    }
+
+                    foreach (Cliente c in Listaredad)
+                    {
+
                     }
                     return Listaredad;
                 }

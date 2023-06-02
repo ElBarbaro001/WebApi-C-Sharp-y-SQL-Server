@@ -55,7 +55,7 @@ namespace WebApi.Controllers
         //GET api/<controller>/5
         [HttpGet]
         [Route("BuscarClientesFechancto")]
-        public List<Cliente> BuscarFec(DateTime fechainicial, DateTime fechafinal)
+        public List<Cliente> BuscarClienteFecNto(DateTime fechainicial, DateTime fechafinal)
         {
             return EjecutarSentencias.BuscarClienteFecNto(fechainicial,fechafinal);
         }
