@@ -1,4 +1,6 @@
-﻿namespace WebApi.Models
+﻿using Microsoft.VisualBasic;
+
+namespace WebApi.Models
 {
     public class Cliente
     {
@@ -16,5 +18,6 @@
         public string? tfno_trabajo { get; set; }
         public string? email { get; set; }
         public string? edad { get; set; }
+
     }
 }

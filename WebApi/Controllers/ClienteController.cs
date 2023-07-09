@@ -80,5 +80,31 @@ namespace WebApi.Controllers
         {
             return EjecutarSentencias.ListarDirecciones();
         }
+        [HttpGet]
+        [Route("HistorialRecargas")]
+        public List<Historial> HistorialRecargas()
+        {
+            return EjecutarSentencias.HistorialRecargas();
+        }
+        [HttpGet]
+        [Route("TarjetasRegistradas")]
+        public List<Tarjeta> TarjetasRegistradas()
+        {
+            return EjecutarSentencias.TarjetasRegistradas();
+        }
+        // PUT api/<controller>/5
+        [HttpPut]
+        [Route("ModificarEstadoTarjeta")]
+        public bool ModificarEstadoTarjeta([FromBody] EstadoTarjeta modTarjeta)
+        {
+            return EjecutarSentencias.ModificarEstadoTarjeta(modTarjeta);
+        }
+        //GET api/<controller>/5
+        [HttpGet]
+        [Route("BuscarDocumento")]
+        public List<Documento> BuscarDocumento(int documento)
+        {
+            return EjecutarSentencias.Documento(documento);
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace WebApi.Conexion
                 SqlCommand cmd = new SqlCommand("reg_cliente", conectar);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@tp_documento", regCliente.tp_documento);
+                
                 cmd.Parameters.AddWithValue("@documento", regCliente.documento);
                 cmd.Parameters.AddWithValue("@nombres", regCliente.nombres);
                 cmd.Parameters.AddWithValue("@primer_apellido", regCliente.primer_apellido);
@@ -369,6 +370,122 @@ namespace WebApi.Conexion
                 {
 
                     return ListarDirecciones;
+                }
+            }
+        }
+        public static List<Historial> HistorialRecargas()
+        {
+            List<Historial> HistorialRecargas = new List<Historial>();
+            using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("select * from Cooperativa.dbo.HistorialTransaccion", conectarDb);
+                cmd.CommandType = CommandType.Text;
+                try
+                {
+                    conectarDb.Open();
+                    cmd.ExecuteNonQuery();
+                    using (SqlDataReader leer = cmd.ExecuteReader())
+                    {
+                        while (leer.Read())
+                        {
+                            HistorialRecargas.Add(new Historial()
+                            {
+                                codigo = Convert.ToInt32(leer["codigo"].ToString()),
+                                fecha = Convert.ToDateTime(leer["fecha"].ToString()),
+                                monto = Convert.ToInt32(leer["monto"].ToString()),
+                                linea = leer["lineaTransaccion"].ToString()
+                            });
+                        }
+                    }
+                    return HistorialRecargas;
+                }
+                catch (Exception ex)
+                {
+
+                    return HistorialRecargas;
+                }
+            }
+        }
+        public static List<Tarjeta> TarjetasRegistradas()
+        {
+            List<Tarjeta> TarjetasRegistradas = new List<Tarjeta>();
+            using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("select * from Cooperativa.dbo.Tarjeta", conectarDb);
+                cmd.CommandType = CommandType.Text;
+                try
+                {
+                    conectarDb.Open();
+                    cmd.ExecuteNonQuery();
+                    using (SqlDataReader leer = cmd.ExecuteReader())
+                    {
+                        while (leer.Read())
+                        {
+                            TarjetasRegistradas.Add(new Tarjeta()
+                            {
+                                codigo = Convert.ToInt32(leer["codigo"].ToString()),
+                                saldo = Convert.ToInt32(leer["saldo"].ToString()),
+                                estado = leer["estado"].ToString()
+                            });
+                        }
+                    }
+                    return TarjetasRegistradas;
+                }
+                catch (Exception ex)
+                {
+
+                    return TarjetasRegistradas;
+                }
+            }
+        }
+        public static bool ModificarEstadoTarjeta(EstadoTarjeta modTarjeta)
+        {
+            using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_estado_tarjeta", conectarDb);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@codigo", modTarjeta.codigo);
+                cmd.Parameters.AddWithValue("@estado", modTarjeta.estado);
+                try
+                {
+                    conectarDb.Open();
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+        public static List<Documento> Documento(int documento)
+        {
+            List<Documento> BuscarDocumento = new List<Documento>();
+            using (SqlConnection conectarDb = new SqlConnection(Conexion.rutaConexion))
+            {
+                SqlCommand cmd = new SqlCommand("sp_buscar_documento", conectarDb);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@documento", documento);
+                try
+                {
+                    conectarDb.Open();
+                    cmd.ExecuteNonQuery();
+                    using (SqlDataReader leer = cmd.ExecuteReader())
+                    {
+                        while (leer.Read())
+                        {
+                            BuscarDocumento.Add(new Documento()
+                            {
+                                documento = Convert.ToInt32(leer["documento"].ToString())
+                            });
+                        }
+                    }
+                    return BuscarDocumento;
+                }
+                catch (Exception ex)
+                {
+
+                    return BuscarDocumento;
                 }
             }
         }
