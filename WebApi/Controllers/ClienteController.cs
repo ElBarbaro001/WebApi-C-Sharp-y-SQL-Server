@@ -101,8 +101,8 @@ namespace WebApi.Controllers
         }
         //GET api/<controller>/5
         [HttpGet]
-        [Route("BuscarDocumento")]
-        public List<Documento> BuscarDocumento(int documento)
+        [Route("ValidarDocumento")]
+        public List<Documento> ValidarDocumento(int documento)
         {
             return EjecutarSentencias.Documento(documento);
         }
